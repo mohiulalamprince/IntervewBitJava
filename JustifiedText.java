@@ -3,8 +3,10 @@ import java.util.Vector;
 public class JustifiedText {
     public static void main(String args[]) {
         //String[] A = {"This", "is", "an", "example", "of", "text", "justification.", "recursions....", "this", "is"};
-        String[] A = {"am", "fasgoprn", "lvqsrjylg", "rzuslwan", "xlaui", "tnzegzuzn", "kuiwdc", "fofjkkkm", "ssqjig", "tcmejefj", "uixgzm", "lyuxeaxsg", "iqiyip", "msv", "uurcazjc", "earsrvrq", "qlq", "lxrtzkjpg", "jkxymjus", "mvornwza", "zty", "q", "nsecqphjy"};
-        String[] ret = fullJustify(A, 14);
+        //String[] A = {"am", "fasgoprn", "lvqsrjylg", "rzuslwan", "xlaui", "tnzegzuzn", "kuiwdc", "fofjkkkm", "ssqjig", "tcmejefj", "uixgzm", "lyuxeaxsg", "iqiyip", "msv", "uurcazjc", "earsrvrq", "qlq", "lxrtzkjpg", "jkxymjus", "mvornwza", "zty", "q", "nsecqphjy"};
+        //String[] A = {"What", "must", "be", "shall", "be."};
+        String[] A = {"tv", "izln", "dkq", "ypbbix", "k", "xoojn", "xju", "xfe", "aysz", "agkfhvtqkt", "rsklvgn", "kedzohp", "lqzz", "hivu", "gtxrjj", "nz", "ysoatq", "n", "ote", "xuctw", "vlvgmfzm", "zlpmp", "oe", "kayhyihc", "yvsllceili", "osqkjjvydc", "p", "zxqrgyvnic", "ebxhww", "pyjdlt", "ruwl", "lnlt", "ddzf", "jicwez", "mcrj", "unbej", "on", "thivo", "sbzxsxvm", "jj", "lacb", "qfsopsmeq", "ial", "tifiuf", "uybh", "pcbufc", "nccdldzs", "pbsofijlmp", "ehdcxkgbi", "wu", "gvnzmw", "czonuzrls", "blg", "y", "qbdgiwboi", "wpeupcwz", "fxnbh", "sybikok", "ukuztzdqk", "oowhjnhol", "s", "kvmtoutvf", "ilh", "q", "tclbqcdbz", "oglfrq", "cwtucyecf", "am", "kflhesgk", "xnxpogj", "nx", "hwfb", "htmf", "xawcimlx", "hhivdgf", "uk", "evtsczh"};
+        String[] ret = fullJustify(A, 483);
         for (int i = 0; i < ret.length; i++) {
             System.out.println(ret[i]);
         }
@@ -16,19 +18,20 @@ public class JustifiedText {
         int size = 0;
         boolean left = false;
         for (int i = 0; i < A.length; i++) {
-            left = true;
             length += A[i].length();
+            if (i != 0) length++;
             if (length > B) {
                 size ++;
                 left = false;
-                length = A[i].length();
+                length = 0;
+                i--;
             }
         }
-        if (left == true) size++;
+        if (length > 0) size++;
 
         if (length == 0) return new String[0];
 
-        String[] ret = new String[size + 1];
+        String[] ret = new String[size];
 
         int counter = 0;
         Vector<String> dummy = new Vector<String>();
@@ -38,7 +41,8 @@ public class JustifiedText {
             length += A[i].length() + 1;
             if (length > B) {
                 String formated = format(dummy, B, false);
-                ret[counter++] = formated;
+                ret[counter] = formated;
+                counter++;
                 dummy.clear();
                 length = A[i].length();
             }
@@ -51,7 +55,8 @@ public class JustifiedText {
             for (int i = 0; i < remainSize; i++) {
                 padding += " ";
             }
-            ret[counter++] = retStr + padding;
+            ret[counter] = retStr + padding;
+            counter++;
         }
         return ret;
     }
