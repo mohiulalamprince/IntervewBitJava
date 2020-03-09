@@ -1,9 +1,12 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Sudoku {
     static int visit[][] = new int[100][100];
     static int counter = 81;
+    static boolean flag = false;
+    static ArrayList<ArrayList<Character>> result = new ArrayList<>();
 
     public static void main(String args[]) {
         ArrayList<String> sample = new ArrayList<>(Arrays.asList("53..7....",
@@ -28,7 +31,6 @@ public class Sudoku {
             board.add(row);
         }
         solveSudoku(board);
-        print(board);
     }
 
     public static void solveSudoku(ArrayList<ArrayList<Character>> a) {
@@ -36,23 +38,37 @@ public class Sudoku {
             for (int j = 0; j < 100; j++)
                 visit[i][j] = 0;
         dfs(0, 0, a);
+
+        if (result.size() > 0) {
+            a.clear();
+            for (int i = 0; i < 9; i++) {
+                a.add(result.get(i));
+            }
+        }
+        print(a);
     }
 
     public static void print(ArrayList<ArrayList<Character>> a) {
         a.forEach(x -> {
-            x.forEach(y -> System.out.print(y));
-            System.out.println();
+            System.out.println(x);
+        });
+    }
+    public static void copy(ArrayList<ArrayList<Character>> a) {
+        a.forEach(x -> {
+            result.add(new ArrayList<>(x));
         });
     }
 
     public static void dfs(int row, int col, ArrayList<ArrayList<Character>> a) {
-        if (col >= 9) return;
-        if (counter == 0) {
+        if (flag == true) return;
+        if (counter <= 0 && flag == false) {
+            copy(a);
+            flag = true;
             return;
         }
 
-        for (int i = row; i < a.size(); i++) {
-            for (int j = col; j < a.size(); j++) {
+        for (int i = 0; i < a.size(); i++) {
+            for (int j = 0; j < a.size(); j++) {
                 if (visit[i][j] == 0 && a.get(i).get(j) == '.') {
                     boolean flag = false;
                     for (int k = 1; k <= 9; k++) {
@@ -61,7 +77,6 @@ public class Sudoku {
                             counter--;
                             a.get(i).set(j, (char)(k+48));
                             a.set(i, a.get(i));
-                            //print(a);
                             dfs(row, col + 1, a);
                             a.get(i).set(j, '.');
                             counter++;
@@ -75,12 +90,12 @@ public class Sudoku {
     }
 
     public static boolean isRowColOk(int row, int col, int value, ArrayList<ArrayList<Character>> a) {
-        for (int i = row; i >= 0; i--) {
+        for (int i = 8; i >= 0; i--) {
             if (a.get(i).get(col) - 48 == value) {
                 return false;
             }
         }
-        for (int i = col; i >= 0; i--) {
+        for (int i = 8; i >= 0; i--) {
             if (a.get(row).get(i) - 48 == value) {
                 return false;
             }
