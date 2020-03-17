@@ -26,7 +26,7 @@ public class PathSum {
         if (root.left == null && root.right == null && sum + root.val == target) {
             answer = 1;
             return ;
-        } 
+        }
 
         dfs(root.left, target, sum + root.val);
         dfs(root.right, target, sum + root.val);
